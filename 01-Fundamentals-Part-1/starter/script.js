@@ -1,4 +1,11 @@
 /*
+
+/**
+  * ==========================
+  * VARIABLES
+  * ==========================
+  */
+
 let js = 'amazing';
 console.log(40+8+23-10);
 
@@ -22,6 +29,12 @@ let myFirstJob = 'Coder';
 let myCurrentJob = 'Teacher';
 
 console.log(myFirstJob);
+
+/**
+  * ==========================
+  * DATA TYPES
+  * ==========================
+  */
 
 // Data types
 
@@ -58,6 +71,11 @@ job = 'Teacher';
 lastName = 'Taylor'; // Don't do this - it will assign the var to the global scope.
 console.log(lastName);
 
+/**
+  * ==========================
+  * OPERATORS
+  * ==========================
+  */
 
 // Math operators
 const now = 2037;
@@ -108,6 +126,12 @@ const job = 'Teacher';
 const birthYear = 1991;
 const now = 2020;
 
+/**
+  * ==========================
+  * STRING/TEMPLATE LITERALS
+  * ==========================
+  */
+
 const jonas = 'I\'m ' + firstName + ', a ' + (now - birthYear) + ' year-old ' + job + '!';
 console.log(jonas);
 
@@ -126,6 +150,12 @@ line`);
 
 const age = 17;
 
+/**
+  * ==========================
+  * IF/ELSE STATEMENTS
+  * ==========================
+  */
+
 if (age >= 18) {
   console.log(`Sarah can start driving license 🚗`);
 } else {
@@ -140,6 +170,12 @@ if (birthYear <= 2000) {
   century = 21;
 }
 console.log(century);
+
+/**
+  * ==========================
+  * TYPE COERCION AND CONVERSION
+  * ==========================
+  */
 
 // type conversion
 const inputYear = '1991';
@@ -162,6 +198,12 @@ console.log(`23` > `18`); // This works too
 let n = '1' + 1; // String 11
 n = n - 1; // Converts 11 to a number
 console.log(n); // (10)
+
+/**
+  * ==========================
+  * TRUTHY & FALSY VALUES
+  * ==========================
+  */
 
 // 5 falsy values: 0, '', undefined, null, NaN
 console.log(Boolean(0)); // false
@@ -218,6 +260,12 @@ if(hasDriversLicense && !isDrunk && hasGoodVision) {
 const day = `Tuesday`;
 let activity;
 
+/**
+  * ==========================
+  * SWITCH STATEMENTS
+  * ==========================
+  */
+
 switch (day) {
   case `Monday`:
   case `Wednesday`:
@@ -247,6 +295,12 @@ if (day ===  `Monday` || day ===  `Wednesday` || day ===  `Friday`) {
   console.log(`Not a valid day!`);
 }
 
+/**
+  * ==========================
+  * STATEMENTS VS. EXPRESSIONS
+  * ==========================
+  */
+
 3 + 4
 1991
 true && false && !false
@@ -270,4 +324,3 @@ if(age >= 18) {
 console.log(drink2);
 
 console.log(`I like to drink ${age >= 18 ? `wine` : `water`}`);
-*/
