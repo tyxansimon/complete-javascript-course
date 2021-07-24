@@ -71,7 +71,7 @@ function backgroundChange(result) {
 }
 
 // Capture form submission
-function checkGuess(e) {
+document.querySelector(`.check`).addEventListener(`click`, function () {
   const guess = Number(document.querySelector('.guess').value);
   // Make sure the user has guesses left
   if (currentScore !== 0) {
@@ -103,7 +103,12 @@ function checkGuess(e) {
     toggleNumber(`show`);
     result = `Loss`;
   }
-}
+});
+
+// On "Again!" click, create a fresh game
+document.querySelector(`.again`).addEventListener(`click`, function () {
+  freshGame();
+});
 
 // Logging/Debugging
 //console.log(`Number: ${randomNumber}, Score: ${currentScore}`);
