@@ -1,20 +1,10 @@
 'use strict';
 
 // Build arrays to store each player's variables
-const players = [
-  {
-    score: 0,
-    current: 0,
-  },
-  {
-    score: 0,
-    current: 0,
-  },
-];
+const playerScores = [{ score: 0 }, { score: 0 }];
 
 // Store active player and eventual winner
-let activePlayer = 0;
-let gameWon = false;
+let activePlayer, current, gameWon;
 
 // Grab interface elements
 const dice = document.querySelector(`.dice`);
@@ -23,18 +13,20 @@ const holdButton = document.querySelector(`.btn--hold`);
 const newButton = document.querySelector(`.btn--new`);
 
 // Start a fresh game
-function freshGame() {
+const freshGame = function () {
+  // Hide the dice
+  dice.classList.add(`hidden`);
   // Reset all properties for both players
-  for (let i = 0; i < players.length; i++) {
+  for (let i = 0; i < playerScores.length; i++) {
     // Update the players array
-    players[i].score = 0;
-    players[i].current = 0;
+    playerScores[i].score = 0;
     // Update the interface with new array values
     document.querySelector(`#score--${i}`).textContent = 0;
     document.querySelector(`#current--${i}`).textContent = 0;
   }
-  // Player 1 always starts the game
+  // Reset vars
   activePlayer = 0;
+  current = 0;
   // If game won, replace player--winner class with player--active, as a lazy fix for a bug.. doesn't make any difference to the user
   if (gameWon) {
     document.querySelector(`.player--winner`).classList.add(`player--active`);
@@ -43,12 +35,13 @@ function freshGame() {
   togglePlayer(true);
   // Reset the winner
   gameWon = false;
-}
-
+};
 freshGame();
 
 // Roll dice
 rollButton.addEventListener(`click`, function () {
+  // Show the dice
+  dice.classList.remove(`hidden`);
   // If game hasn't been won yet
   if (gameWon === false) {
     // Generate number between 1 and 6
@@ -69,9 +62,9 @@ rollButton.addEventListener(`click`, function () {
 // Change current
 function changeCurrent(newCurrent) {
   // Add old and new currents together
-  const currentSum = players[activePlayer].current + newCurrent;
+  const currentSum = current + newCurrent;
   // Change on the backend
-  players[activePlayer].current = currentSum;
+  current = currentSum;
   // Change on interface
   document.querySelector(`#current--${activePlayer}`).textContent = currentSum;
 }
@@ -82,7 +75,7 @@ function togglePlayer(reset = false) {
   if (!reset) {
     // Reset score to 0 on interface and backend
     document.querySelector(`#current--${activePlayer}`).textContent = 0;
-    players[activePlayer].current = 0;
+    current = 0;
     // Toggle activePlayer
     activePlayer = activePlayer === 1 ? 0 : 1;
   }
@@ -96,7 +89,7 @@ holdButton.addEventListener(`click`, function () {
   // If game hasn't been won yet
   if (gameWon === false) {
     // Add .score--activePlayer
-    const newScore = players[activePlayer].current;
+    const newScore = current;
     changeScore(newScore);
   }
 });
@@ -104,9 +97,9 @@ holdButton.addEventListener(`click`, function () {
 // Change score
 function changeScore(newScore) {
   // Add old and new scores together
-  const scoreSum = players[activePlayer].score + newScore;
+  const scoreSum = playerScores[activePlayer].score + newScore;
   // Change on the backend
-  players[activePlayer].score = scoreSum;
+  playerScores[activePlayer].score = scoreSum;
   // Change on interface
   document.querySelector(`#score--${activePlayer}`).textContent = scoreSum;
   console.log(`Player ${activePlayer + 1} scores ${newScore} points`);
@@ -127,9 +120,9 @@ function winner() {
   document.querySelector(`.player--active`).classList.remove(`player--active`);
   document.querySelector(`.player--${activePlayer}`).classList.add(`player--winner`);
   console.log(`Player ${activePlayer + 1} wins!`);
+  // Hide the dice
+  dice.classList.add(`hidden`);
 }
 
 // Create a new game
-newButton.addEventListener(`click`, function () {
-  freshGame();
-});
+newButton.addEventListener(`click`, freshGame);
