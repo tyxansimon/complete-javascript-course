@@ -16,6 +16,7 @@ function freshGame() {
   updateScore(20);
   toggleNumber(`hide`);
   updateMessage(`Start guessing...`);
+  backgroundChange(`default`);
   console.log(`Game reset`);
 }
 
@@ -61,6 +62,16 @@ function toggleNumber(toggle) {
   }
 }
 
+// Change background colour to green on win
+function backgroundChange(result) {
+  // If result is blank, return to dark
+  if (result === `win`) {
+    document.body.setAttribute(`class`, `win`);
+  } else {
+    document.body.removeAttribute(`class`);
+  }
+}
+
 // Capture form submission
 function checkGuess(e) {
   const guess = Number(document.getElementsByClassName('guess')[0].value);
@@ -73,23 +84,24 @@ function checkGuess(e) {
         updateScore(currentScore - 1);
         // Show message with hint
         if (guess > randomNumber) {
-          updateMessage(`Too high!`);
+          updateMessage(`📈 Too high!`);
         } else {
-          updateMessage(`Too low!`);
+          updateMessage(`📉 Too low!`);
         }
       } else {
+        result = `Win`;
         toggleNumber(`show`);
         updateHighScore(currentScore);
-        updateMessage(`You guessed it!`);
-        result = `Win`;
+        updateMessage(`🎉  Correct number!`);
+        backgroundChange(`win`);
       }
     } else {
-      updateMessage(`You've already won, dingus!`);
+      updateMessage(`🙈  You've already won!`);
     }
     console.log(`Player guessed ${guess}`);
   } else {
     // Player is out of guesses
-    updateMessage(`You're out of guesses :(`);
+    updateMessage(`😭 You're out of guesses`);
     toggleNumber(`show`);
     result = `Loss`;
   }
