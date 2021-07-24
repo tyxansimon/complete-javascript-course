@@ -27,85 +27,84 @@ function generateNumber() {
 
 // Grab the score from .score
 function getScore() {
-  return Number(document.getElementsByClassName('score')[0].innerHTML);
+  return Number(document.querySelector('.score').textContent);
 }
 
 // Calculate highscore
 function updateHighScore(score) {
   // Get current value of .highscore
-  const highScore = Number(
-    document.getElementsByClassName('highscore')[0].innerHTML
-  );
+  const highScore = Number(document.querySelector('.highscore').textContent);
   // If score > .highscore value, replace highscore innerHTML
-  if (score > highScore) {
-    document.getElementsByClassName('highscore')[0].innerHTML = score;
-  }
+  score > highScore
+    ? (document.querySelector('.highscore').textContent = score)
+    : null;
 }
 
 // Update score
 function updateScore(score) {
-  currentScore = score;
-  document.getElementsByClassName('score')[0].innerHTML = score;
+  currentScore = getScore(); // Mutate currentScore variable
+  document.querySelector('.score').textContent = score;
 }
 
 // Update message
 function updateMessage(message) {
-  document.getElementsByClassName('message')[0].innerHTML = message;
+  document.querySelector('.message').textContent = message;
 }
 
 // Show/Hide number
 function toggleNumber(toggle) {
-  if (toggle === `show`) {
-    document.getElementsByClassName('number')[0].innerHTML = randomNumber;
-  } else {
-    document.getElementsByClassName('number')[0].innerHTML = `?`;
-  }
+  toggle === `show`
+    ? (document.querySelector('.number').textContent = randomNumber)
+    : (document.querySelector('.number').textContent = `?`);
 }
 
 // Change background colour to green on win
 function backgroundChange(result) {
   // If result is blank, return to dark
-  if (result === `win`) {
-    document.body.setAttribute(`class`, `win`);
-  } else {
-    document.body.removeAttribute(`class`);
-  }
+  result === `win`
+    ? document.body.setAttribute(`class`, `win`)
+    : document.body.removeAttribute(`class`);
 }
 
 // Capture form submission
-function checkGuess(e) {
-  const guess = Number(document.getElementsByClassName('guess')[0].value);
-  // Make sure the user has guesses left
-  if (currentScore !== 0) {
-    // Make sure player hasn't already one
-    if (result !== `Win`) {
-      if (guess !== randomNumber) {
-        // Reduce score by 1
-        updateScore(currentScore - 1);
-        // Show message with hint
-        if (guess > randomNumber) {
-          updateMessage(`📈 Too high!`);
+document.querySelector(`.check`).addEventListener(`click`, function () {
+  const guess = Number(document.querySelector('.guess').value);
+  // Check if there is a value
+  if (guess) {
+    // Make sure the user has guesses left
+    if (currentScore > 1) {
+      // Make sure player hasn't already one
+      if (result !== `Win`) {
+        if (guess !== randomNumber) {
+          // Reduce score by 1
+          updateScore(currentScore - 1);
+          // Show message with hint
+          guess > randomNumber
+            ? updateMessage(`📈 Too high!`)
+            : updateMessage(`📉 Too low!`);
         } else {
-          updateMessage(`📉 Too low!`);
+          result = `Win`;
+          toggleNumber(`show`);
+          updateHighScore(currentScore);
+          updateMessage(`🎉  Correct number!`);
+          backgroundChange(`win`);
         }
       } else {
-        result = `Win`;
-        toggleNumber(`show`);
-        updateHighScore(currentScore);
-        updateMessage(`🎉  Correct number!`);
-        backgroundChange(`win`);
+        updateMessage(`🙈  You've already won!`);
       }
+      console.log(`Player guessed ${guess}`);
     } else {
-      updateMessage(`🙈  You've already won!`);
+      // Player is out of guesses
+      updateMessage(`😭 You're out of guesses`);
+      toggleNumber(`show`);
+      result = `Loss`;
     }
-    console.log(`Player guessed ${guess}`);
   } else {
-    // Player is out of guesses
-    updateMessage(`😭 You're out of guesses`);
-    toggleNumber(`show`);
-    result = `Loss`;
+    updateMessage(`🧐 You must enter a number between 1 and 20!`);
   }
-}
+});
 
-// Logging/Debugging
-//console.log(`Number: ${randomNumber}, Score: ${currentScore}`);
+// On "Again!" click, create a fresh game
+document.querySelector(`.again`).addEventListener(`click`, function () {
+  freshGame();
+});
